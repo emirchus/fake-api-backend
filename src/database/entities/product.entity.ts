@@ -10,6 +10,7 @@ import {
 import { Category } from '@db/entities/category.entity';
 import { Transform } from 'class-transformer';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { transformStringToArray } from '@utils/string';
 
 @Entity()
 @ObjectType({ description: 'product ' })
@@ -36,13 +37,7 @@ export class Product {
   category: Category;
 
   @Field(() => [String])
-  @Transform(({ value }) =>
-    value === ''
-      ? []
-      : value.startsWith('[')
-      ? JSON.parse(value)
-      : value.split(','),
-  )
+  @Transform(transformStringToArray)
   @Column()
   images: string;
 
