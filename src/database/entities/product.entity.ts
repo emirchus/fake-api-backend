@@ -36,7 +36,13 @@ export class Product {
   category: Category;
 
   @Field(() => [String])
-  @Transform(({ value }) => (value === '' ? [] : value.split(',')))
+  @Transform(({ value }) =>
+    value === ''
+      ? []
+      : value.startsWith('[')
+      ? JSON.parse(value)
+      : value.split(','),
+  )
   @Column()
   images: string;
 
